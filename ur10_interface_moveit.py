@@ -39,10 +39,10 @@ class UR10:
         self.move_group.clear_pose_targets()
 
     def set_cartesian_position(self, target_pose):
-        current_pose = self.get_pose()
-        distance = np.linalg.norm(current_pose[:3] - target_pose[:3])
+        current_pose = self.get_cartesian_position()
+        distance = np.linalg.norm(np.array(current_pose[:3]) - np.array(target_pose[:3]))
         n_steps = max(int(distance / 0.05), 1)
-        print("Number of steps:", n_steps)
+        #print("Number of steps:", n_steps)
         pos_intpl = np.linspace(current_pose[:3], target_pose[:3], n_steps+1)[1:]
         quats = R.concatenate([R.from_quat(current_pose[3:]), R.from_quat(target_pose[3:])])
         intpl_func = Slerp([0, 1], quats)

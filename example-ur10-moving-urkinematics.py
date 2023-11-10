@@ -21,7 +21,7 @@ new_joint_pos = ur_kin.inverse(pose_matrix, False, q_guess=pos)
 print('calculated joint position\n',new_joint_pos)
 
 
-print('press any button to go table pose')
+print('press enter button to go table pose')
 input()
 robot.table_pose()
 rospy.sleep(2.0)

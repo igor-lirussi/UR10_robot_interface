@@ -10,7 +10,7 @@ rospy.sleep(2.0)
 pos=robot.get_joint_position()
 print(pos)
 
-print('press any button to go table pose')
+print('press enter button to go table pose')
 input()
 robot.table_pose()
 rospy.sleep(2.0)
