@@ -3,7 +3,7 @@ import numpy as np
 from tf2_msgs.msg import TFMessage
 from std_msgs.msg import Header
 from sensor_msgs.msg import JointState
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, WrenchStamped
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from control_msgs.msg import FollowJointTrajectoryActionGoal
 from actionlib_msgs.msg import GoalStatusArray
@@ -20,10 +20,13 @@ class UR10:
         self._goal_sub = rospy.Subscriber("/scaled_pos_joint_traj_controller/follow_joint_trajectory/status", GoalStatusArray, self._fill_status)
         self._joint_sub = rospy.Subscriber("/joint_states", JointState, self._fill_joints)
         self._tool_controller_position_sub = rospy.Subscriber("/tf", TFMessage, self._fill_tool_controller_position)
+        self._force_torque_sub = rospy.Subscriber("/wrench", WrenchStamped, self._fill_force_torque)
         self._joint_position = {}
         self._joint_velocity = {}
         self._cartesian_position = []
         self._goal_status_list = []
+        self._force = []
+        self._torque = []
 
     def get_joint_position(self):
         position = []
@@ -136,3 +139,13 @@ class UR10:
 
     def _fill_status(self, msg):
         self._goal_status_list = msg.status_list
+
+    def _fill_force_torque(self, msg):
+        self._force = [ msg.wrench.force.x, msg.wrench.force.y, msg.wrench.force.z ]
+        self._torque = [ msg.wrench.torque.x, msg.wrench.torque.y, msg.wrench.torque.z ]
+
+    def get_force(self):
+        return self._force
+
+    def get_torque(self):
+        return self._torque
