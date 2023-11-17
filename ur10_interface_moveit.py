@@ -33,12 +33,12 @@ class UR10:
         return [pose.position.x, pose.position.y, pose.position.z,
                          pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
 
-    def set_joint_position(self, joint_position):
-        self.move_group.go(joint_position, wait=True)
+    def set_joint_position(self, joint_position, blocking=True):
+        self.move_group.go(joint_position, wait=blocking)
         self.move_group.stop()
         self.move_group.clear_pose_targets()
 
-    def set_cartesian_position(self, target_pose):
+    def set_cartesian_position(self, target_pose, blocking=True):
         current_pose = self.get_cartesian_position()
         distance = np.linalg.norm(np.array(current_pose[:3]) - np.array(target_pose[:3]))
         n_steps = max(int(distance / 0.05), 1)
@@ -59,7 +59,7 @@ class UR10:
             pose.orientation.w = quat[3]
             waypoints.append(deepcopy(pose))
         plan, _ = self.move_group.compute_cartesian_path(waypoints, 0.01, 0.0)
-        self.move_group.execute(plan, wait=True)
+        self.move_group.execute(plan, wait=blocking)
         self.move_group.stop()
         self.move_group.clear_pose_targets()
 
