@@ -70,6 +70,12 @@ class UR10:
                     wait=False
                 self.rate.sleep()
 
+    def get_joint_velocity(self):
+        velocity = []
+        for name in self.joint_names:
+            velocity.append(self._joint_velocity[name])
+        return velocity
+
     def set_joint_velocity(self, velocities, time_from_start=5, blocking=True):
         if blocking:
             ratio_max_time=500/100 #percentage of time_from_start given after which wating expires
