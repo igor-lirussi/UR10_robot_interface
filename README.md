@@ -4,6 +4,8 @@
 This repo allows you to control easily the UR10 robot from your computer with ROS, sending commands to retrieve joint/cartesian position or to move the robot to desired positions.
 There are two versions of the interface, one with [MoveIt](https://moveit.ros.org) motion planning framework (suggested) and one sending directly the commands to the ROS topics, if you have problems with MoveIt installation.
 
+This works also with the [Gripper 3F interface](https://github.com/igor-lirussi/Gripper3F_interface)
+
 ### Topics:
 - Robotics
 - UR10
@@ -24,14 +26,53 @@ There are two versions of the interface, one with [MoveIt](https://moveit.ros.or
 
 
 ## Install 
-*   clone in your project
+*   install the Requirements & Dependencies
+*   clone this repo in your project
+
+## Run
 *   remember to source the setup.bash of catkin
 *   run the node to communicate with the robot
 *   (if you use moveit) run the node to plan
-*   use the interface as in the "Run" section
+*   use the interface as in the "Code" section
 *   (optional)(if you use moveit) run the node to have the RViz GUI visualization
 
-## Run
+Example:
+```bash
+# on the UR10 robot pc
+on - start - ok
+program robot -> load program 
+load the 'rosdriver.urp'
+lower the speed!
+
+
+# on the external pc
+
+# FOR THE ROBOT
+# source the knowledge for ROS
+source /home/ur-colors/UR10_dockerized/catkin_ws/devel/setup.bash 
+# activate env to have the pkgs installed
+conda activate ur10_py3.9
+# to activate the main node 
+roslaunch ur_robot_driver ur10_bringup.launch robot_ip:=192.168.0.111 kinematics_config:=${HOME}/ur10colors_calibration.yaml
+# ! you can press play on the robot screen, the progam finds the main node running, on the terminal you see 'Robot connected to reverse interface. Ready to receive control commands.'
+
+# IF YOU WANT TO USE MOVE IT SERVICE PLANNER, in ANOTHER SHELL:
+roslaunch ur10_moveit_config moveit_planning_execution.launch
+
+# IF YOU WANT TO VISUALIZE THE ROBOT POSITION WITH MOVEIT and RVIZ, in ANOTHER SHELL:
+roslaunch ur10_moveit_config moveit_rviz.launch
+
+# (IF YOU HAVE A 3F GRIPPER) FOR THE GRIPPER, in ANOTHER SHELL:
+# source the knowledge for ROS
+source /home/ur-colors/UR10_dockerized/catkin_ws/devel/setup.bash 
+# activate env to have the pkgs installed
+conda activate ur10_py3.9
+# launch the node for the gripper, it moves to calibrate
+roslaunch robotiq_3f_driver listener.launch ip_address:=192.168.0.11
+```
+
+
+## Code
 ```python
 from ur10_interface_moveit import UR10
 import rospy
