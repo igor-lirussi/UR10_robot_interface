@@ -1,3 +1,7 @@
+"""
+Description: UR10 interface with MoveIT
+Author: Igor Lirussi (https://igor-lirussi.github.io)
+"""
 import sys
 from copy import deepcopy
 import rospy

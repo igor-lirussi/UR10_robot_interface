@@ -2,9 +2,23 @@
 **UR10 Robot interface for controlling it with ROS**
 ## Description 
 This repo allows you to control easily the UR10 robot from your computer with ROS, sending commands to retrieve joint/cartesian position or to move the robot to desired positions.
-There are two versions of the interface, one with [MoveIt](https://moveit.ros.org) motion planning framework (suggested) and one sending directly the commands to the ROS topics, if you have problems with MoveIt installation.
+*There are two versions of the interface*, one interface with [MoveIt](https://moveit.ros.org) motion planning framework (suggested because it has its own inverse kinematics solver to obtain cartesian position) and one interface sending directly the commands to the ROS topics, if you have problems with the MoveIt installation.
 
 This works also with the [Gripper 3F interface](https://github.com/igor-lirussi/Gripper3F_interface)
+
+| **Method**                  | **UR10 (Moveit)** | **UR10 (No Moveit)** |
+|-----------------------------|-------------------|-----------------------|
+| `get_joint_position`       | ✅                | ✅                    |
+| `get_cartesian_position`   | ✅                | ✅                    |
+| `set_joint_position`       | ✅                | ✅                    |
+| `set_cartesian_position`   | ✅                | ❌                    |
+| `table_pose`               | ✅                | ✅                    |
+| `zero_pose`                | ✅                | ✅                    |
+| `set_joint_velocity`       | ❌                | ✅                    |
+| `get_joint_velocity`       | ❌                | ✅                    |
+| `wobble`                   | ❌                | ✅                    |
+| `get_force`                | ❌                | ✅                    |
+| `get_torque`               | ❌                | ✅                    |
 
 ### Topics:
 - Robotics
@@ -39,7 +53,7 @@ This works also with the [Gripper 3F interface](https://github.com/igor-lirussi/
 Example:
 ```bash
 # on the UR10 robot pc
-on - start - ok
+on -> start -> ok
 program robot -> load program 
 load the 'rosdriver.urp'
 lower the speed!
@@ -73,6 +87,7 @@ roslaunch robotiq_3f_driver listener.launch ip_address:=192.168.0.11
 
 
 ## Code
+Example usage below:
 ```python
 from ur10_interface_moveit import UR10
 import rospy
@@ -81,11 +96,15 @@ rospy.init_node("ur10moving")
 rospy.sleep(1.0)
 robot = UR10()
 
+cart=robot.get_cartesian_position()
+print(cart)
+
 pos=robot.get_joint_position()
 print(pos)
 
-robot.table_pose()
 robot.set_joint_position([-0.015, -1.7569, -1.3694, -1.4978, 1.7183, -2.4595])
+
+robot.table_pose()
 ```
 
 ## Useful Resources & Extra

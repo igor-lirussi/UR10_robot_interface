@@ -1,3 +1,7 @@
+"""
+Description: UR10 interface without MoveIT, if possible use the other interface for MoveIt 
+Author: Igor Lirussi (https://igor-lirussi.github.io)
+"""
 import rospy
 import numpy as np
 from tf2_msgs.msg import TFMessage
