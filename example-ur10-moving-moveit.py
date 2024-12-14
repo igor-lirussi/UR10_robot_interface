@@ -13,6 +13,10 @@ rospy.sleep(2.0)
 cart=robot.get_cartesian_position()
 print(cart)
 
+print('press enter button to move to position, remember to keep the robot emergency stop red button next to you')
+input()
+robot.set_cartesian_position([-0.9664, -0.1334, 0.4086, 0.3577, -0.9337, 0.0047, 0.0123])
+
 pos=robot.get_joint_position()
 print('real position\n',pos)
 
@@ -26,5 +30,4 @@ robot.table_pose()
 
 rospy.sleep(2.0)
 
-print("going to zero pose")
 robot.zero_pose()

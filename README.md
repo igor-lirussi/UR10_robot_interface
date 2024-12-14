@@ -8,10 +8,10 @@ This works also with the [Gripper 3F interface](https://github.com/igor-lirussi/
 
 | **Method**                  | **UR10 (Moveit)** | **UR10 (No Moveit)** |
 |-----------------------------|-------------------|-----------------------|
+| `set_cartesian_position`   | ✅                | ❌                    |
+| `set_joint_position`       | ✅                | ✅                    |
 | `get_joint_position`       | ✅                | ✅                    |
 | `get_cartesian_position`   | ✅                | ✅                    |
-| `set_joint_position`       | ✅                | ✅                    |
-| `set_cartesian_position`   | ✅                | ❌                    |
 | `table_pose`               | ✅                | ✅                    |
 | `zero_pose`                | ✅                | ✅                    |
 | `set_joint_velocity`       | ❌                | ✅                    |
@@ -62,21 +62,31 @@ lower the speed!
 # on the external pc
 
 # FOR THE ROBOT
-# source the knowledge for ROS
-source /home/ur-colors/UR10_dockerized/catkin_ws/devel/setup.bash 
+# commands to source the knowledge for ROS
+# source /home/ur-colors/UR10_dockerized/catkin_ws/devel/setup.bash 
+# or
+source /home/ur-colors/srdpur10ws/UR10_dockerized/catkin_ws/devel/setup.bash
 # activate env to have the pkgs installed
 conda activate ur10_py3.9
 # to activate the main node 
 roslaunch ur_robot_driver ur10_bringup.launch robot_ip:=192.168.0.111 kinematics_config:=${HOME}/ur10colors_calibration.yaml
-# ! you can press play on the robot screen, the progam finds the main node running, on the terminal you see 'Robot connected to reverse interface. Ready to receive control commands.'
+# NOW PRESS PLAY ON THE ROBOT SCREEN, the progam finds the main node running, on the terminal you should see 
+# 'Robot connected to reverse interface. Ready to receive control commands.'
 
-# IF YOU WANT TO USE MOVE IT SERVICE PLANNER, in ANOTHER SHELL:
+# ACTIVATE MOVE IT SERVICE PLANNER (if you use it)
+# ON ANOTHER SHELL
+conda activate ur10_py3.9
 roslaunch ur10_moveit_config moveit_planning_execution.launch
 
-# IF YOU WANT TO VISUALIZE THE ROBOT POSITION WITH MOVEIT and RVIZ, in ANOTHER SHELL:
+# NOW YOU ARE FREE TO SEND COMMANDS TO ROBOT, EVEN WITH THE PYTHON INTERFACE WITH MOVEIT
+
+# IF YOU WANT TO VISUALIZE THE ROBOT POSITION WITH MOVEIT
+# ON ANOTHER SHELL
+conda activate ur10_py3.9
 roslaunch ur10_moveit_config moveit_rviz.launch
 
-# (IF YOU HAVE A 3F GRIPPER) FOR THE GRIPPER, in ANOTHER SHELL:
+# (IF YOU HAVE A 3F GRIPPER) FOR THE GRIPPER:
+# ON ANOTHER SHELL
 # source the knowledge for ROS
 source /home/ur-colors/UR10_dockerized/catkin_ws/devel/setup.bash 
 # activate env to have the pkgs installed
@@ -99,12 +109,16 @@ robot = UR10()
 cart=robot.get_cartesian_position()
 print(cart)
 
+robot.set_cartesian_position([-0.9664, -0.1334, 0.4086, 0.3577, -0.9337, 0.0047, 0.0123])
+
 pos=robot.get_joint_position()
 print(pos)
 
 robot.set_joint_position([-0.015, -1.7569, -1.3694, -1.4978, 1.7183, -2.4595])
 
 robot.table_pose()
+
+robot.zero_pose()
 ```
 
 ## Useful Resources & Extra

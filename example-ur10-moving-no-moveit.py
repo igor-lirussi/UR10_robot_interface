@@ -26,5 +26,4 @@ robot.table_pose()
 
 rospy.sleep(2.0)
 
-print("going to zero pose")
 robot.zero_pose()
