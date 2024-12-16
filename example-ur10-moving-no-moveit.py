@@ -2,7 +2,7 @@
 Description: Example of usage of UR10 interface without moveit
 Author: Igor Lirussi (https://igor-lirussi.github.io)
 """
-from ur10_interface import UR10 # this example uses ur10_interface without moveit and doesn't have "get_cartesian_position". # if possible use the interface for Moveit installed in the system
+from ur10_interface import UR10 # this example uses ur10_interface without moveit and doesn't have "set_cartesian_position". # if possible use the interface for Moveit installed in the system
 import rospy
 
 rospy.init_node("ur10moving")
