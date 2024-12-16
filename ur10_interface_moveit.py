@@ -62,7 +62,7 @@ class UR10:
             pose.orientation.z = quat[2]
             pose.orientation.w = quat[3]
             waypoints.append(deepcopy(pose))
-        plan, _ = self.move_group.compute_cartesian_path(waypoints, 0.01, 0.0)
+        plan, _ = self.move_group.compute_cartesian_path(waypoints, 0.01)
         self.move_group.execute(plan, wait=blocking)
         self.move_group.stop()
         self.move_group.clear_pose_targets()
